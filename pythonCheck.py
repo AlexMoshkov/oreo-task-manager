@@ -8,21 +8,14 @@ from jsonschema import RefResolutionError
 import requests
 # import python3-nmap
 MAX_TIMEOUT = 2
+
+
 def check_internet():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.settimeout(MAX_TIMEOUT)
     result = sock.connect_ex(('8.8.8.8', 53))
     if result != 0: print("No internet")
 
-def ping(site):
-    """Send GET request to input site and return status code"""
-    try:
-        resp = requests.get(site, verify=False, timeout=MAX_TIMEOUT)
-        print(resp.status_code)
-        if resp.status_code ==  200: return 1
-    except:
-        pass
-    return 0
 
 def check_host(host, port):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -48,7 +41,6 @@ def check_ports_from_file(filename):
                 host, port = line.split(":")[0], line.split(":")[1]
             else:
                 host = line.replace('\n', '')
-                print(line)
                 port = 80
             result = check_host(host, port)
             if result == 1:
