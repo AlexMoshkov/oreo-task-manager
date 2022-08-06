@@ -41,18 +41,23 @@ def check_ports_from_file(filename):
     with open(filename, 'r') as f:
         result = -1
         for line in f:
+            line = line.replace('http://' ,'')
+            line = line.replace('https://' ,'')
+            line = line.replace('\n', '')
             if ":" in line:
                 host, port = line.split(":")[0], line.split(":")[1]
             else:
                 host = line.replace('\n', '')
+                print(line)
                 port = 80
             result = check_host(host, port)
             if result == 1:
 #           backend.send("OK");
-                print(line +  ':OK')
+                print(line +  '   :OK')
+                pass
             else:
 #          backend.send("BAD");
-                print(line +':BAD')
+                print(line +'   :BAD')
 
 def main():
     filename = 'hostlist.txt'
