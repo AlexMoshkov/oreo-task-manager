@@ -22,24 +22,11 @@ services:
       POSTGRES_USER: "secretuser"
       POSTGRES_PASSWORD: "secretpassword"
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U habrpguser -d habrdb" ]
+      test: [ "CMD-SHELL", "pg_isready -U secretuser -d secretpassword" ]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 10s
-
-  pgadmin:
-    container_name: letoctf_postgres_admin
-    image: dpage/pgadmin4:5.7
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "maza@abakumov.life"
-      PGADMIN_DEFAULT_PASSWORD: "secretpasswordchack"
-      PGADMIN_CONFIG_SERVER_MODE: "False"
-    volumes:
-      - ./pgadmin:/var/lib/pgadmin
-    ports:
-      - "5050:80"
-    restart: unless-stopped
 
 networks:
   default:
