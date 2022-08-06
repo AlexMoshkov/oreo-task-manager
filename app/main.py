@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 from app.dto.requests import CardIn, ColumnIn, CheckerInfoIn
-from database import engine
+from app.database import engine
 
 
 db = Session(engine)
