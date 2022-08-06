@@ -5,8 +5,6 @@ services:
     build: .
     container_name: letoctf_fastapi
     restart: unless-stopped
-    ports:
-      - "80"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.letoctf_fastapi.rule=Host(`gachi.abakumov.life`)"
@@ -44,6 +42,6 @@ services:
     restart: unless-stopped
 
 networks:
-  traefik:
+  default:
     external:
       name: traefik_network
