@@ -1,3 +1,5 @@
-fastapi
+fastapi~=0.79.0
 uvicorn
-pydantic
+pydantic~=1.9.1
+
+SQLAlchemy~=1.4.39
