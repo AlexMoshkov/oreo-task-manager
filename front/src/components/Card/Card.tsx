@@ -23,71 +23,66 @@ async function getData(url = '') {
 }
 }
 
-  const AddCard = (props:any) => {
+  const Card = (props:any) => {
     const { query } = useRouter();
 
     useEffect(() => {
-      getData('http://10.2.2.102:8000/api/card/'+query.id)
+      getData('http://10.2.2.102:8000/api/card/'+query.card_id)
       .then((data) => {
           console.log(data)
-          setTitle(data.title); // JSON data parsed by `data.json()` call
+          setTitle(data.title);
+          setWorker(data.executor)
+          setHost(data.host)
+          setTeg(data.tag)
+          setShortDescription(data.short_description)
+          setLongDescription(data.description)
       });
     }, []);
 
-    const [title, setTitle] = useState("");
+    const [title, setTitle] = useState("Title");
     const [worker, setWorker] = useState("");
     const [host, setHost] = useState("");
     const [teg, setTeg] = useState("");
-    const [message, setMessage] = useState("");
-    
-    const url = "http://127.0.0.1:8000/api/employer/";
-    const data = {
-      title: title,
-      worker: worker || "Нет",
-      host: host || "Нет",
-      teg: teg || "Нет",
-      message: message || "Нет",
-    };
+    const [shortDescription, setShortDescription] = useState("");
+    const [longDescription, setLongDescription] = useState("");
   
     return (
       <Content>
         <h4>{props.title}</h4>
         <div>
           <MobileChanger>
-            <p>Title</p>
+            <p>{title}</p>
           </MobileChanger>
           <ComputerChanger>
-            <p>Title</p>
+            <p>{title}</p>
           </ComputerChanger>
         </div>
         <div>
           <MobileChanger>
-            <p>Worker</p>
+            <p>{worker}</p>
           </MobileChanger>
           <ComputerChanger>
-            <p>Worker</p>
+            <p>{worker}</p>
           </ComputerChanger>
         </div>
         <div>
-          <p>Host</p>
+          <p>{host}t</p>
         </div>
         <div>
-          <p>Teg</p>
+          <p>{teg}</p>
         </div>
         <div>
-          <p>Short Description</p>
-          <p></p>
+          <p>{shortDescription}</p>
         </div>
         <div>
-          <p>Long Description</p>
-          <p></p>
+          <p>{longDescription}</p>
         </div>
         <div>
             <Link href={'/card/EditCard/'+query.card_id}><SendBtn>Edit</SendBtn></Link>
-            <Link href='/oreo-task-manager/front/app/pages'><SendBtn>Cancel</SendBtn></Link>
+            <Link href='/'><SendBtn>Cancel</SendBtn></Link>
         </div>
       </Content>
     );
   };
   
-  export default AddCard;
+  export default Card;

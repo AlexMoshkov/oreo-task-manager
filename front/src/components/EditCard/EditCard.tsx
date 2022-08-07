@@ -177,7 +177,7 @@ import {
         </div>
         <div>
             <SendBtn onClick={() => submit(url, data)}>Send</SendBtn>
-            <Link href='/oreo-task-manager/front/app/pages'><SendBtn>Cancel</SendBtn></Link>
+            <Link href='/'><SendBtn>Cancel</SendBtn></Link>
             <SendBtn onClick={() => deleteCard(url, props.id)}>Delete</SendBtn>
         </div>
       </Content>
