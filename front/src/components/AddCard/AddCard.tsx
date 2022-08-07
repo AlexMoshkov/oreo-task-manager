@@ -18,7 +18,7 @@ import { useRouter } from "next/router";
     const [teg, setTeg] = useState("");
     const [longDescription, setLongDescription] = useState("");
     const [shortDescription, setShortDescription] = useState("");
-    const url = "http://fastapi/api/card";
+    const url = "http://gachi.abakumov.life:8081/api/card";
     const data = {
       column_id: Number(query.AddCard), 
       title: title,
