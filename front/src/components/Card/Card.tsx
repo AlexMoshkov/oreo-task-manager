@@ -27,7 +27,7 @@ async function getData(url = '') {
     const { query } = useRouter();
 
     useEffect(() => {
-      getData('http://fastspi:8000/api/card/'+query.card_id)
+      getData('http://fastapi/api/card/'+query.card_id)
       .then((data) => {
           console.log(data)
           setTitle(data.title);

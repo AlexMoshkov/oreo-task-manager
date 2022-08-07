@@ -37,7 +37,7 @@ import {
     const [shortDescription, setShortDescription] = useState("");
 
     useEffect(() => {
-      getData('http://fastspi:8000/api/card/'+query.EditCard)
+      getData('http://fastapi/api/card/'+query.EditCard)
       .then((data) => {
           console.log(data)
           setId(data.id)
@@ -50,7 +50,7 @@ import {
       });
     }, []);
 
-    const urlDel = "http://fastspi:8000/api/card/"+query.EditCard;
+    const urlDel = "http://fastapi/api/card/"+query.EditCard;
 
     async function deleteCard(urlDel:any) {
             try {
@@ -64,7 +64,7 @@ import {
             }
           }
 
-    const url = "http://fastspi:8000/api/card/"+query.EditCard;
+    const url = "http://fastapi/api/card/"+query.EditCard;
     const data = {
       title: title,
       executor: worker || "Нет",
