@@ -41,6 +41,7 @@ class CardUpdate(BaseModel):
 
 
 class ShortCardOut(BaseModel):
+    id: int
     title: str
     is_active: bool
 
@@ -49,6 +50,16 @@ class ShortCardOut(BaseModel):
 
 
 class ColumnOut(BaseModel):
+    id: int
     title: str
-    cards: List[ShortCardOut]
+    items: List[ShortCardOut]
 
+
+class DiedHostsOut(BaseModel):
+    id: int
+    title: str
+    host: str
+    tag: str
+
+    class Config:
+        orm_mode = True

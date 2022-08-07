@@ -5,7 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 
-from app.dto.requests import CardIn, ColumnData, CheckerInfoIn, CardUpdate, ShortCardOut, ColumnOut
+from app.dto.requests import CardIn, ColumnData, CheckerInfoIn, CardUpdate, ShortCardOut, ColumnOut, CardOut, \
+    DiedHostsOut
 from app.database import engine
 from . import models
 from .dto.responses import SuccessResponse, ErrorResponse, HostOut
@@ -23,6 +24,7 @@ app.add_middleware(
 
 @app.get("/api/card/{id}")
 async def get_card(id: str) -> JSONResponse:
+    db.flush()
     stmt = select(models.CardModel).where(models.CardModel.id == id)
     card = db.scalar(stmt)
     if not card:
@@ -33,6 +35,7 @@ async def get_card(id: str) -> JSONResponse:
 @app.post("/api/card")
 async def create_card(data: CardIn) -> JSONResponse:
     db.flush()
+    print(data)
     card = models.CardModel(
         title=data.title,
         short_description=data.short_description,
@@ -49,6 +52,7 @@ async def create_card(data: CardIn) -> JSONResponse:
 
 @app.put("/api/card/{id}")
 async def update_card(id: str, data: CardUpdate) -> JSONResponse:
+    db.flush()
     stmt = select(models.CardModel).where(models.CardModel.id == id)
     card = db.scalar(stmt)
     if not card:
@@ -61,6 +65,7 @@ async def update_card(id: str, data: CardUpdate) -> JSONResponse:
 
 @app.delete("/api/card/{id}")
 async def delete_card(id: str) -> JSONResponse:
+    db.flush()
     stmt = select(models.CardModel).where(models.CardModel.id == id)
     card = db.scalar(stmt)
     if not card:
@@ -72,6 +77,7 @@ async def delete_card(id: str) -> JSONResponse:
 
 @app.get("/api/column/{id}")
 async def get_column(id: str) -> JSONResponse:
+    db.flush()
     stmt = select(models.ColumnModel).where(models.ColumnModel.id == id)
     column = db.scalar(stmt)
     if not column:
@@ -81,6 +87,7 @@ async def get_column(id: str) -> JSONResponse:
 
 @app.post("/api/column")
 async def create_column(data: ColumnData) -> JSONResponse:
+    db.flush()
     column = models.ColumnModel(title=data.title)
     if not column:
         return JSONResponse(status_code=400, content=ErrorResponse().dict())
@@ -91,6 +98,7 @@ async def create_column(data: ColumnData) -> JSONResponse:
 
 @app.get("/api/column")
 async def get_all_column() -> JSONResponse:
+    db.flush()
     stmt = select(models.ColumnModel)
     columns = db.scalars(stmt)
     if not columns:
@@ -100,13 +108,14 @@ async def get_all_column() -> JSONResponse:
         stmt = select(models.CardModel).where(models.CardModel.column_id == column.id)
         cards = db.scalars(stmt)
         cards = [ShortCardOut.from_orm(card) for card in cards]
-        columns_out.append(ColumnOut(title=column.title, cards=cards))
+        columns_out.append(ColumnOut(id=column.id, title=column.title, items=cards))
     return JSONResponse(status_code=200, content=jsonable_encoder(columns_out))
 
 
 @app.post("/api/checker")
 async def get_checker_info(data: CheckerInfoIn):
-    stmt = select(models.CardModel).where(models.CardModel.id == id)
+    db.flush()
+    stmt = select(models.CardModel).where(models.CardModel.id == data.key)
     cards = db.scalars(stmt)
     if not cards:
         return JSONResponse(status_code=400, content=ErrorResponse().dict())
@@ -118,7 +127,17 @@ async def get_checker_info(data: CheckerInfoIn):
 
 @app.get("/api/hostlist")
 async def get_hostlist() -> JSONResponse:
+    db.flush()
     stmt = select(models.CardModel)
     cards = db.scalars(stmt)
     cards = [HostOut.from_orm(card) for card in cards]
+    return JSONResponse(status_code=200, content=jsonable_encoder(cards))
+
+
+@app.get("/api/diedhosts")
+async def get_died_hosts() -> JSONResponse:
+    db.flush()
+    stmt = select(models.CardModel).where(models.CardModel.is_active == False)
+    cards = db.scalars(stmt)
+    cards = [DiedHostsOut.from_orm(card) for card in cards]
     return JSONResponse(status_code=200, content=jsonable_encoder(cards))
