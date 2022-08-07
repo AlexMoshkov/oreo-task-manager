@@ -119,7 +119,7 @@ const Main = () => {
                         onDragEnd={(e) => DragEndHandler(e)}
                         onDrop ={(e) => dropHandler(e, column, column.id)}
                         draggable={false}
-                        style={{cursor:'unset', opacity:'0'}}>
+                        style={{cursor:'unset', opacity:'0', height:'100%'}}>
                     </Card>
                 </Column>
             )}
