@@ -1,18 +1,26 @@
 version: '3.4'
 
 services:
+  next:
+    build:
+      context: ./front
+    container_name: letoctf_next
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.letoctf_fastapi.rule=Host(`gachi.abakumov.life`)"
+      - "traefik.http.routers.letoctf_fastapi.entrypoints=websecure"
+      - "traefik.http.routers.letoctf_fastapi.tls=true"
+      - "traefik.http.routers.letoctf_fastapi.tls.certresolver=letsencrypt"
+      - "traefik.http.services.letoctf_fastapi.loadbalancer.server.port=3000"
+      - "traefik.docker.network=traefik_network"
+
   fastapi:
     build: .
     container_name: letoctf_fastapi
     restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.letoctf_fastapi.rule=Host(`letoctf.abakumov.life`)"
-      - "traefik.http.routers.letoctf_fastapi.entrypoints=websecure"
-      - "traefik.http.routers.letoctf_fastapi.tls=true"
-      - "traefik.http.routers.letoctf_fastapi.tls.certresolver=letsencrypt"
-      - "traefik.http.services.letoctf_fastapi.loadbalancer.server.port=80"
-      - "traefik.docker.network=traefik_network"
+    ports:
+      - "8081:80"
 
   postgres:
     image: postgres
@@ -24,26 +32,13 @@ services:
     ports:
       - "5432:5432"
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U secretuser -d hackathon" ]
+      test: [ "CMD-SHELL", "pg_isready -U secretuser -d secretpassword" ]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 10s
 
-  pgadmin:
-    container_name: letoctf_postgres_admin
-    image: dpage/pgadmin4:5.7
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "maza@abakumov.life"
-      PGADMIN_DEFAULT_PASSWORD: "secretpasswordchack"
-      PGADMIN_CONFIG_SERVER_MODE: "False"
-    volumes:
-      - ./pgadmin:/var/lib/pgadmin
-    ports:
-      - "5050:80"
-    restart: unless-stopped
-
 networks:
-  traefik:
+  default:
     external:
       name: traefik_network

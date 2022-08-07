@@ -10,6 +10,9 @@ from app.dto.requests import CardIn, ColumnData, CheckerInfoIn, CardUpdate, Shor
 from app.database import engine
 from . import models
 from .dto.responses import SuccessResponse, ErrorResponse, HostOut
+from app.dto.requests import CardIn, ColumnIn, CheckerInfoIn
+from app.database import engine
+
 
 db = Session(engine)
 app = FastAPI()
