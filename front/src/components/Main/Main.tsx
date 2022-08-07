@@ -23,10 +23,25 @@ async function getData(url = '') {
   }
   }
 
+  async function putData(url = '') {
+    try {
+    const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            accept: 'application/json',
+        }
+    });
+    return response.json();
+} catch (error) {
+    alert(error);
+    console.error("Ошибка:", error);
+  }
+  }
+
 const Main = () => {
     const router = useRouter()
     useEffect(() => {
-        getData('http://10.2.2.102:8000/api/column')
+        getData('http://fastapi/api/column')
         .then((data) => {
             setColumns(data)
         });
