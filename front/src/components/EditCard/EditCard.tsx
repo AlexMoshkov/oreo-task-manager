@@ -27,6 +27,7 @@ import {
 
   const EditCard = (props:any) => {
     const { query } = useRouter();
+    const router = useRouter();
 
     const [id, setId] = useState("");
     const [title, setTitle] = useState("");
@@ -57,7 +58,7 @@ import {
               const response = await fetch(urlDel, {
                 method: "DELETE"
               });
-                  alert(`${response.status}`);
+              router.push('/')
             } catch (error) {
               alert(error);
               console.error("Ошибка:", error);
@@ -93,17 +94,7 @@ import {
                   "Content-Type": "application/json",
                 },
               });
-              if (response.status === 201) {
-                alert(`Заявка будет рассмотрена в ближайшее время.`);
-              } else {
-                if (response.status === 400) {
-                  alert(
-                    `Похоже, что вы отправили слишком много заявок, подождите`
-                  );
-                } else {
-                  alert(`${response.status}`);
-                }
-              }
+              router.push('/')
             } catch (error) {
               alert(error);
               console.error("Ошибка:", error);

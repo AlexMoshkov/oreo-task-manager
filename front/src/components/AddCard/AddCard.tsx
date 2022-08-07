@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
   
   const AddCard = (props:any) => {
     const { query } = useRouter();
+    const router = useRouter()
     const [title, setTitle] = useState("");
     const [worker, setWorker] = useState("");
     const [host, setHost] = useState("");
@@ -47,7 +48,7 @@ import { useRouter } from "next/router";
                   "Content-Type": "application/json",
                 },
               });
-                alert(`${response.status}`);
+              router.push('/')
               }
              catch (error) {
               alert(error);
