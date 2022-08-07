@@ -1,9 +1,10 @@
 version: '3.4'
 
 services:
-  fastapi:
-    build: .
-    container_name: letoctf_fastapi
+  next:
+    build:
+      context: ./front
+    container_name: letoctf_next
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
@@ -11,8 +12,15 @@ services:
       - "traefik.http.routers.letoctf_fastapi.entrypoints=websecure"
       - "traefik.http.routers.letoctf_fastapi.tls=true"
       - "traefik.http.routers.letoctf_fastapi.tls.certresolver=letsencrypt"
-      - "traefik.http.services.letoctf_fastapi.loadbalancer.server.port=80"
+      - "traefik.http.services.letoctf_fastapi.loadbalancer.server.port=3000"
       - "traefik.docker.network=traefik_network"
+
+  fastapi:
+    build: .
+    container_name: letoctf_fastapi
+    restart: unless-stopped
+    ports:
+      - "80:8081"
 
   postgres:
     image: postgres
