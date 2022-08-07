@@ -8,25 +8,26 @@ import {
   } from "./styles";
   import { useState } from "react";
   import Link from "next/link";
+  import { useRouter } from "next/router";
   
   const AddCard = (props:any) => {
+    const { query } = useRouter();
     const [title, setTitle] = useState("");
     const [worker, setWorker] = useState("");
     const [host, setHost] = useState("");
     const [teg, setTeg] = useState("");
     const [longDescription, setLongDescription] = useState("");
     const [shortDescription, setShortDescription] = useState("");
-    const [hintsText, setHintsText] = useState("");
     
-    const url = "http://127.0.0.1:8000/api/employer/";
+    const url = "http://10.2.2.102:8000/api/card";
     const data = {
+      column_id: Number(query.AddCard), 
       title: title,
-      worker: worker || "Нет",
+      executor: worker || "Нет",
       host: host || "Нет",
-      teg: teg || "Нет",
-      shortDescription: shortDescription || "Нет",
-      longDescription: longDescription || "Нет",
-      hintsText: hintsText || "Нет"
+      tag: teg || "Нет",
+      short_description: shortDescription || "Нет",
+      description: longDescription || "Нет"
     };
     async function submit(url: string, data: any) {
       if (!title) {
@@ -127,13 +128,6 @@ import {
             placeholder="..."
             value={longDescription}
             onChange={(event) => setLongDescription(event.target.value)}
-          ></InputField>
-          <p>Hints</p>
-          <InputField
-            placeholder="..."
-            value={hintsText}
-            style={{height:'100px'}}
-            onChange={(event) => setHintsText(event.target.value)}
           ></InputField>
         </div>
         <div>

@@ -28,14 +28,13 @@ const Main = () => {
     useEffect(() => {
         getData('http://10.2.2.102:8000/api/column')
         .then((data) => {
-            console.log(data)
-            setColumns(data); // JSON data parsed by `data.json()` call
+            setColumns(data)
         });
       }, []);
     const [columns, setColumns] = useState([
-        {id: 1, title:"To Do", color:'#FBD2D2', items: [{id: 1, title:"asdf", isActive:false},{id: 2, title:"1zxc234", isActive:true}]},
-        {id: 2, title:"InProcess", color:'#FBF2D2', items: [{id: 3, title:"asdf", isActive:false},{id: 4, title:"1zxc234", isActive:true}]},
-        {id: 3, title:"Done", color:'#C9E3AE', items: [{id: 5, title:"ffff", isActive:true},{id: 6, title:"wasd", isActive:true}]}
+        {id: 1, title:"To Do", color:'#FBD2D2', items: [{id: 1, title:"asdf", is_active:false},{id: 2, title:"1zxc234", is_active:true}]},
+        {id: 2, title:"InProcess", color:'#FBF2D2', items: [{id: 3, title:"asdf", is_active:false},{id: 4, title:"1zxc234", is_active:true}]},
+        {id: 3, title:"Done", color:'#C9E3AE', items: [{id: 5, title:"ffff", is_active:true},{id: 6, title:"wasd", is_active:true}]}
     ])
     const [currentColumn, setCurrentColumn] = useState<any>(null)
     const [currentItem, setCurrentItem] = useState<any>(null)
@@ -82,7 +81,7 @@ const Main = () => {
                 <Column>
                     <div style={{display:'flex'}}>
                         <Title text={column.title} color={column.color}/>
-                        <Link href={'card/AddCard/'+column.title}><p style={{margin: 'auto 10px', fontSize: '28px', cursor: 'pointer'}}>... +</p></Link>
+                        <Link href={'card/AddCard/'+column.id}><p style={{margin: 'auto 10px', fontSize: '28px', cursor: 'pointer'}}>... +</p></Link>
                     </div>
                     {}
                     {column.items.map(item =>
@@ -94,7 +93,7 @@ const Main = () => {
                         onDrop ={(e) => dropHandler(e, column, item)}
                         onClick = {(e) => openCard(e, item)}
                         draggable={true}>
-                            <Indicator style={{border: item.isActive? 'solid 3px green' : 'solid 3px red'}}/>
+                            <Indicator style={{border: item.is_active? 'solid 3px green' : 'solid 3px red'}}/>
                             <p style={{marginLeft: '20px'}}>{item.title}</p> 
                         </Card>
                         )}

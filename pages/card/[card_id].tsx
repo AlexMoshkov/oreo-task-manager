@@ -7,7 +7,7 @@ const OpenCard = () => {
   return (
     <div>
       <Header/>
-      <Card/>
+      <Card props={query.card_id}/>
     </div>
   );
 };
