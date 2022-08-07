@@ -86,7 +86,8 @@ def check_ports():
             else:
     #          backend.send("BAD");
                 print(line +'   :BAD')
-
+    else:
+        print("requestExseptions")
 def main():
     check_ports()
     # filename = 'hostlist.txt'

@@ -51,7 +51,7 @@ def echo_all(message):
             line_hosts2 = line_hosts1
             line_hosts1 = []
             # bot.send_message(message.from_user.id, 'Check_status')
-        elif host == -1: bot.send_message(message.from_user.id, "Не получается подключится к бэку")
+        elif host == "requestExseptions": bot.send_message(message.from_user.id, "Не получается подключится к бэку")
         else: bot.send_message(message.from_user.id, "Все работает исправно")
     else:
         bot.send_message(message.chat.id, 'Что-то не понятное, повтори еще раз')
