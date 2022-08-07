@@ -55,29 +55,28 @@ def send_to_backend(hash, result): #result bool True/False
     if r.status_code == 200: print("Success send hosts!")
 
 def check_ports_from_file(filename):
-    with open(filename, 'r') as f:
+    for line in fetch_hosts():
         result = -1
-        for line in fetch_hosts():
-            hash = line["id"]
-            # print("hash:  " + str(hash))
-            line = (line["host"])
-            line = line.replace('http://' ,'')
-            line = line.replace('https://' ,'')
-            line = line.replace('\n', '')
-            if ":" in line:
-                host, port = line.split(":")[0], line.split(":")[1]
-            else:
-                host = line.replace('\n', '')
-                port = 80
-            result = check_host(host, port) #new tread and go next without delay
-            send_to_backend(hash, result) # delete host
-            if result == 1:
+        hash = line["id"]
+        # print("hash:  " + str(hash))
+        line = (line["host"])
+        line = line.replace('http://' ,'')
+        line = line.replace('https://' ,'')
+        line = line.replace('\n', '')
+        if ":" in line:
+            host, port = line.split(":")[0], line.split(":")[1]
+        else:
+            host = line.replace('\n', '')
+            port = 80
+        result = check_host(host, port) #new tread and go next without delay
+        send_to_backend(hash, result) # delete host
+        if result == 1:
 #           backend.send("OK");
-                print(line +  '   :OK')
-                pass
-            else:
+            print(line +  '   :OK')
+            pass
+        else:
 #          backend.send("BAD");
-                print(line +'   :BAD')
+            print(line +'   :BAD')
 
 def main():
     filename = 'hostlist.txt'
