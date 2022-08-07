@@ -41,7 +41,7 @@ async function getData(url = '') {
 const Main = () => {
     const router = useRouter()
     useEffect(() => {
-        getData('http://gachi.abakumov.life:8081/api/column')
+        getData('https://cryptocar.abakumov.life/api/column')
         .then((data) => {
             setColumns(data)
         });
