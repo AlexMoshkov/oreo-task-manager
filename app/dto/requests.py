@@ -1,30 +1,54 @@
-from typing import List
 from pydantic import BaseModel
+from pydantic.typing import List
 
 
-class HostIn(BaseModel):
-    ip: str
-    post: int
-
-
-class CardIn(BaseModel):
+class CardOut(BaseModel):
     title: str
     short_description: str
     description: str
     executor: str
-    checker_key: str
-    hosts: List[HostIn]
-    need_notify: bool
-    tags: List[str]
+    host: str
+    tag: str
+
+    class Config:
+        orm_mode = True
 
 
-class ColumnIn(BaseModel):
+class CardIn(CardOut):
+    column_id: int
+
+
+class ColumnData(BaseModel):
     title: str
+
+    class Config:
+        orm_mode = True
 
 
 class CheckerInfoIn(BaseModel):
     key: str
-    status: str  # TODO
-    logs: str  # TODO
+    status: bool  # TODO
+    logs: str | None # TODO
 
+
+class CardUpdate(BaseModel):
+    title: str | None
+    short_description: str | None
+    description: str | None
+    executor: str | None
+    host: str | None
+    tag: str | None
+
+
+class ShortCardOut(BaseModel):
+    title: str
+    is_active: bool
+
+    class Config:
+        orm_mode = True
+
+
+class ColumnOut(BaseModel):
+    title: str
+    cards: List[ShortCardOut]
 

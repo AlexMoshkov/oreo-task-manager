@@ -13,6 +13,8 @@ services:
       POSTGRES_DB: "hackathon"
       POSTGRES_USER: "secretuser"
       POSTGRES_PASSWORD: "secretpassword"
+    ports:
+      - "5432:5432"
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U secretuser -d hackathon" ]
       interval: 10s
