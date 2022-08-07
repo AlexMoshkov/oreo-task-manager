@@ -4,7 +4,7 @@ yandex.ru:80
 yandex.ru:500
 google.com/sdfd
 sdfdsf.ru
-goole.com/sdfd
+goole.com/sdfd  
 yandex.ru
 http://10.2.3.2:8000
 10.2.1.126:3000
