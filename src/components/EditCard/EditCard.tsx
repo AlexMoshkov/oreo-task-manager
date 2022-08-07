@@ -6,67 +6,74 @@ import {
     ComputerChanger,
     SendBtn,
   } from "./styles";
-  import { useState } from "react";
+  import { useState, useEffect } from "react";
+  import { useRouter } from "next/router";
   import Link from "next/link";
   
+  async function getData(url = '') {
+    try {
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            accept: 'application/json',
+        }
+    });
+    return response.json();
+  } catch (error) {
+    alert(error);
+    console.error("Ошибка:", error);
+  }
+  }
+
   const EditCard = (props:any) => {
-    
+    const { query } = useRouter();
+
+    const [id, setId] = useState("");
     const [title, setTitle] = useState("");
     const [worker, setWorker] = useState("");
     const [host, setHost] = useState("");
     const [teg, setTeg] = useState("");
     const [longDescription, setLongDescription] = useState("");
     const [shortDescription, setShortDescription] = useState("");
-    const [hintsText, setHintsText] = useState("");
-    
-    const url = "http://127.0.0.1:8000/api/employer/";
-    const data = {
-      title: title,
-      worker: worker || "Нет",
-      host: host || "Нет",
-      teg: teg || "Нет",
-      shortDescription: shortDescription || "Нет",
-      longDescription: longDescription || "Нет",
-      hintsText: hintsText || "Нет"
-    };
-    async function deleteCard(url: string, data: any) {
-      if (!title) {
-        alert("Введите заголовок таска");
-      } else {
-        if (!worker) {
-          alert("Введите название организации");
-        } else {
-          if (!host) {
-            alert("Введите адрес хоста");
-          }
-          else {
+
+    useEffect(() => {
+      getData('http://fastspi:8000/api/card/'+query.EditCard)
+      .then((data) => {
+          console.log(data)
+          setId(data.id)
+          setTitle(data.title);
+          setWorker(data.executor)
+          setHost(data.host)
+          setTeg(data.tag)
+          setShortDescription(data.short_description)
+          setLongDescription(data.description)
+      });
+    }, []);
+
+    const urlDel = "http://fastspi:8000/api/card/"+query.EditCard;
+
+    async function deleteCard(urlDel:any) {
             try {
-              const response = await fetch(url, {
-                method: "POST", // или 'PUT'
-                body: JSON.stringify(data), // данные могут быть 'строкой' или {объектом}!
-                headers: {
-                  "Content-Type": "application/json",
-                },
+              const response = await fetch(urlDel, {
+                method: "DELETE"
               });
-              if (response.status === 201) {
-                alert(`Заявка будет рассмотрена в ближайшее время.`);
-              } else {
-                if (response.status === 400) {
-                  alert(
-                    `Похоже, что вы отправили слишком много заявок, подождите`
-                  );
-                } else {
                   alert(`${response.status}`);
-                }
-              }
             } catch (error) {
               alert(error);
               console.error("Ошибка:", error);
             }
           }
-        }
-      }
-    }
+
+    const url = "http://fastspi:8000/api/card/"+query.EditCard;
+    const data = {
+      title: title,
+      executor: worker || "Нет",
+      host: host || "Нет",
+      tag: teg || "Нет",
+      short_description: shortDescription || "Нет",
+      description: longDescription || "Нет"
+    };
+    
     async function submit(url: string, data: any) {
       if (!title) {
         alert("Введите заголовок таска");
@@ -80,7 +87,7 @@ import {
           else {
             try {
               const response = await fetch(url, {
-                method: "POST", // или 'PUT'
+                method: "PUT", // или 'PUT'
                 body: JSON.stringify(data), // данные могут быть 'строкой' или {объектом}!
                 headers: {
                   "Content-Type": "application/json",
@@ -167,18 +174,11 @@ import {
             value={longDescription}
             onChange={(event) => setLongDescription(event.target.value)}
           ></InputField>
-          <p>Hints</p>
-          <InputField
-            placeholder="..."
-            value={hintsText}
-            style={{height:'100px'}}
-            onChange={(event) => setHintsText(event.target.value)}
-          ></InputField>
         </div>
         <div>
             <SendBtn onClick={() => submit(url, data)}>Send</SendBtn>
             <Link href='/'><SendBtn>Cancel</SendBtn></Link>
-            <SendBtn onClick={() => deleteCard(url, props.id)}>Delete</SendBtn>
+            <SendBtn onClick={() => deleteCard(urlDel)}>Delete</SendBtn>
         </div>
       </Content>
     );

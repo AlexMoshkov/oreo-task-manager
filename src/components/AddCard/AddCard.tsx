@@ -6,9 +6,9 @@ import {
     ComputerChanger,
     SendBtn,
   } from "./styles";
-  import { useState } from "react";
-  import Link from "next/link";
-  import { useRouter } from "next/router";
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
   
   const AddCard = (props:any) => {
     const { query } = useRouter();
@@ -18,8 +18,7 @@ import {
     const [teg, setTeg] = useState("");
     const [longDescription, setLongDescription] = useState("");
     const [shortDescription, setShortDescription] = useState("");
-    
-    const url = "http://10.2.2.102:8000/api/card";
+    const url = "http://fastapi/api/card";
     const data = {
       column_id: Number(query.AddCard), 
       title: title,
@@ -48,18 +47,9 @@ import {
                   "Content-Type": "application/json",
                 },
               });
-              if (response.status === 201) {
-                alert(`Заявка будет рассмотрена в ближайшее время.`);
-              } else {
-                if (response.status === 400) {
-                  alert(
-                    `Похоже, что вы отправили слишком много заявок, подождите`
-                  );
-                } else {
-                  alert(`${response.status}`);
-                }
+                alert(`${response.status}`);
               }
-            } catch (error) {
+             catch (error) {
               alert(error);
               console.error("Ошибка:", error);
             }
